@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DarkWing.Test", "DarkWing.Test\DarkWing.Test.csproj", "{65A517D6-A6C9-4094-BC86-00095B67CA50}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DarkWing.Connector", "DarkWing.Connector\DarkWing.Connector.csproj", "{F3555ED3-1169-4F6B-803A-C4FFE9DC1105}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20548210-1AE9-47C1-A2BA-FC78028B3C53}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarkWing.PriceSource", "DarkWing.PriceSource\DarkWing.PriceSource.csproj", "{C1E7E3FC-73E4-47FE-8E87-47BCFD986F66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarkWing.Common", "DarkWing.Common\DarkWing.Common.csproj", "{B3EC7696-B0BE-4B31-AE7C-9652A03635A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65A517D6-A6C9-4094-BC86-00095B67CA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65A517D6-A6C9-4094-BC86-00095B67CA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65A517D6-A6C9-4094-BC86-00095B67CA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65A517D6-A6C9-4094-BC86-00095B67CA50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3555ED3-1169-4F6B-803A-C4FFE9DC1105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3555ED3-1169-4F6B-803A-C4FFE9DC1105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3555ED3-1169-4F6B-803A-C4FFE9DC1105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3555ED3-1169-4F6B-803A-C4FFE9DC1105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1E7E3FC-73E4-47FE-8E87-47BCFD986F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1E7E3FC-73E4-47FE-8E87-47BCFD986F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1E7E3FC-73E4-47FE-8E87-47BCFD986F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1E7E3FC-73E4-47FE-8E87-47BCFD986F66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3EC7696-B0BE-4B31-AE7C-9652A03635A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3EC7696-B0BE-4B31-AE7C-9652A03635A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3EC7696-B0BE-4B31-AE7C-9652A03635A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3EC7696-B0BE-4B31-AE7C-9652A03635A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07E89327-58EE-439E-ABDE-0CA4489FA217}
+	EndGlobalSection
+EndGlobal

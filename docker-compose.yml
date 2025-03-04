@@ -1,0 +1,6 @@
+﻿services:
+  dark-wing.price-source:
+    image: dark-wing.price-source
+    build:
+      context: .
+      dockerfile: DarkWing.PriceSource/Dockerfile
