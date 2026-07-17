@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: darkwing-worker
+  namespace: darkwing
+  labels:
+    app.kubernetes.io/name: darkwing-worker
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/part-of: darkwing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: darkwing-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: darkwing-worker
+        app.kubernetes.io/component: worker
+        app.kubernetes.io/part-of: darkwing
+    spec:
+      containers:
+        - name: worker
+          image: darkwing-worker:local
+          imagePullPolicy: Never
+          env:
+            - name: DOTNET_ENVIRONMENT
+              value: Production
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

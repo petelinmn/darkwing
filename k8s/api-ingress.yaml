@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: darkwing-api
+  namespace: darkwing
+  labels:
+    app.kubernetes.io/name: darkwing-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: darkwing
+  annotations:
+    # k3s ships Traefik; expose on the HTTP entrypoint
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: darkwing.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: darkwing-api
+                port:
+                  number: 80

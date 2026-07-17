@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: darkwing
+  labels:
+    app.kubernetes.io/name: darkwing
+    app.kubernetes.io/part-of: darkwing

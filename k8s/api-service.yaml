@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: darkwing-api
+  namespace: darkwing
+  labels:
+    app.kubernetes.io/name: darkwing-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: darkwing
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: darkwing-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
