@@ -1,0 +1,32 @@
+# Optional CLI debug overlay (Cursor/VS Code attach). Visual Studio: set startup project to docker-compose and press F5.
+services:
+  darkwing.api:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    working_dir: /src/Darkwing.Api
+    volumes:
+      - ./src/Darkwing.Api:/src/Darkwing.Api
+      - ./nuget.config:/nuget.config:ro
+      - darkwing-api-nuget:/root/.nuget/packages
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+    entrypoint: ["dotnet", "run", "--no-launch-profile", "--urls", "http://+:8080"]
+
+  darkwing.worker:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    working_dir: /src/Darkwing.Worker
+    volumes:
+      - ./src/Darkwing.Worker:/src/Darkwing.Worker
+      - ./nuget.config:/nuget.config:ro
+      - darkwing-worker-nuget:/root/.nuget/packages
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      DOTNET_USE_POLLING_FILE_WATCHER: "1"
+    entrypoint: ["dotnet", "run", "--no-launch-profile"]
+
+volumes:
+  darkwing-api-nuget:
+  darkwing-worker-nuget:

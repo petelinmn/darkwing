@@ -1,0 +1,12 @@
+# Development overrides (Visual Studio merges this automatically with docker-compose.yml).
+services:
+  darkwing.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - "8080:8080"
+
+  darkwing.worker:
+    environment:
+      - DOTNET_ENVIRONMENT=Development

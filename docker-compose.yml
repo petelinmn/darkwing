@@ -1,0 +1,13 @@
+# Base compose file used by Visual Studio (docker-compose.dcproj) and CLI.
+services:
+  darkwing.api:
+    image: ${DOCKER_REGISTRY-}darkwingapi
+    build:
+      context: .
+      dockerfile: src/Darkwing.Api/Dockerfile
+
+  darkwing.worker:
+    image: ${DOCKER_REGISTRY-}darkwingworker
+    build:
+      context: .
+      dockerfile: src/Darkwing.Worker/Dockerfile

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Darkwing.Api/Darkwing.Api.csproj" />
+    <Project Path="src/Darkwing.Worker/Darkwing.Worker.csproj" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+</Solution>

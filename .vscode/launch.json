@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Api (local)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Darkwing.Api/bin/Debug/net10.0/Darkwing.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Darkwing.Api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5080"
+      }
+    },
+    {
+      "name": "Worker (local)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Darkwing.Worker/bin/Debug/net10.0/Darkwing.Worker.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Darkwing.Worker",
+      "env": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    {
+      "name": "Docker: Attach Api",
+      "type": "docker",
+      "request": "attach",
+      "platform": "netCore",
+      "containerName": "darkwing-darkwing.api-1",
+      "sourceFileMap": {
+        "/src/Darkwing.Api": "${workspaceFolder}/src/Darkwing.Api"
+      }
+    },
+    {
+      "name": "Docker: Attach Worker",
+      "type": "docker",
+      "request": "attach",
+      "platform": "netCore",
+      "containerName": "darkwing-darkwing.worker-1",
+      "sourceFileMap": {
+        "/src/Darkwing.Worker": "${workspaceFolder}/src/Darkwing.Worker"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Docker: Attach Api + Worker",
+      "configurations": ["Docker: Attach Api", "Docker: Attach Worker"],
+      "stopAll": true
+    },
+    {
+      "name": "Local: Api + Worker",
+      "configurations": ["Api (local)", "Worker (local)"],
+      "stopAll": true
+    }
+  ]
+}
