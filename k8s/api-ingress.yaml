@@ -13,8 +13,8 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: darkwing.localhost
-      http:
+    # No host → Traefik matches any Host (VDS IP or a domain).
+    - http:
         paths:
           - path: /
             pathType: Prefix

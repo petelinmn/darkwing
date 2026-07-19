@@ -8,11 +8,13 @@ metadata:
     app.kubernetes.io/component: api
     app.kubernetes.io/part-of: darkwing
 spec:
-  type: LoadBalancer
+  # NodePort so the API is reachable even when EXTERNAL-IP stays <pending>.
+  type: NodePort
   selector:
     app.kubernetes.io/name: darkwing-api
   ports:
     - name: http
       port: 80
       targetPort: http
+      nodePort: 30080
       protocol: TCP
