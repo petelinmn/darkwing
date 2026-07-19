@@ -14,7 +14,7 @@ if (app.Environment.IsDevelopment())
 
 var summaries = new[]
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    "Freezing1", "Bracing2", "Chilly3", "Cool4", "Mild5", "Warm6", "Balmy7", "Hot8", "Sweltering9", "Scorching10"
 };
 
 app.MapGet("/weatherforecast", () =>
