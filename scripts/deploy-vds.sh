@@ -13,9 +13,11 @@ cd "$ROOT"
 
 API_IMAGE="${API_IMAGE:-darkwing-api}"
 WORKER_IMAGE="${WORKER_IMAGE:-darkwing-worker}"
+PRICEPICKER_IMAGE="${PRICEPICKER_IMAGE:-darkwing-pricepicker}"
 IMAGE_TAG="${IMAGE_TAG:-local}"
 API_REF="${API_IMAGE}:${IMAGE_TAG}"
 WORKER_REF="${WORKER_IMAGE}:${IMAGE_TAG}"
+PRICEPICKER_REF="${PRICEPICKER_IMAGE}:${IMAGE_TAG}"
 
 need() {
   command -v "$1" >/dev/null 2>&1 || {
@@ -38,17 +40,22 @@ docker build -t "${API_REF}" -t "${API_IMAGE}:local" -f src/Darkwing.Api/Dockerf
 echo "Building ${WORKER_REF} ..."
 docker build -t "${WORKER_REF}" -t "${WORKER_IMAGE}:local" -f src/Darkwing.Worker/Dockerfile .
 
+echo "Building ${PRICEPICKER_REF} ..."
+docker build -t "${PRICEPICKER_REF}" -t "${PRICEPICKER_IMAGE}:local" -f src/PricePicker/Dockerfile .
+
 echo "Importing images into k3s ..."
 docker save "${API_IMAGE}:local" | sudo k3s ctr images import -
 docker save "${WORKER_IMAGE}:local" | sudo k3s ctr images import -
+docker save "${PRICEPICKER_IMAGE}:local" | sudo k3s ctr images import -
 
 echo "Applying manifests ..."
 kubectl apply -k k8s
 
 echo "Restarting deployments so pods pick up rebuilt :local images ..."
-kubectl -n darkwing rollout restart deploy/darkwing-api deploy/darkwing-worker
+kubectl -n darkwing rollout restart deploy/darkwing-api deploy/darkwing-worker deploy/pricepicker
 kubectl -n darkwing rollout status deploy/darkwing-api --timeout=180s
 kubectl -n darkwing rollout status deploy/darkwing-worker --timeout=180s
+kubectl -n darkwing rollout status deploy/pricepicker --timeout=180s
 
 echo ""
 echo "Deployed. Status:"

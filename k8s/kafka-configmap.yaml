@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-jaas
+  namespace: darkwing
+data:
+  kafka_server_jaas.conf: |
+    KafkaServer {
+       org.apache.kafka.common.security.plain.PlainLoginModule required
+       username="admin"
+       password="adminpass"
+       user_testuser="testpass";
+    };

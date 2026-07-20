@@ -2,6 +2,14 @@
   <Folder Name="/src/">
     <Project Path="src/Darkwing.Api/Darkwing.Api.csproj" />
     <Project Path="src/Darkwing.Worker/Darkwing.Worker.csproj" />
+    <Project Path="src/PricePicker/PricePicker.csproj" />
+  </Folder>
+  <Folder Name="/src/Integration/">
+  </Folder>
+  <Folder Name="/src/Integration/Exchange/">
+    <Project Path="src/Integration/Exchange/ByBit/ByBit.csproj" />
+    <Project Path="src/Integration/Exchange/Contracts/Contracts.csproj" />
+    <Project Path="src/Integration/Exchange/Darkwing.Integration.Exchange.Binance/Binance.csproj" />
   </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />

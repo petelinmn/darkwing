@@ -10,3 +10,7 @@ services:
   darkwing.worker:
     environment:
       - DOTNET_ENVIRONMENT=Development
+
+  price.picker:
+    environment:
+      - DOTNET_ENVIRONMENT=Development

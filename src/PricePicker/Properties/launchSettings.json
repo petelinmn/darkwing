@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Darkwing.PricePicker": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricepicker
+  namespace: darkwing
+  labels:
+    app.kubernetes.io/name: pricepicker
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/part-of: darkwing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pricepicker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pricepicker
+        app.kubernetes.io/component: worker
+        app.kubernetes.io/part-of: darkwing
+    spec:
+      containers:
+        - name: pricepicker
+          image: darkwing-pricepicker:local
+          imagePullPolicy: Never
+          env:
+            - name: DOTNET_ENVIRONMENT
+              value: Production
+            - name: Kafka__BootstrapServers
+              value: kafka:9093
+            - name: Kafka__Username
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: KAFKA_USERNAME
+            - name: Kafka__Password
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: KAFKA_PASSWORD
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

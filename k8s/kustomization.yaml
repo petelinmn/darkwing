@@ -5,10 +5,18 @@ namespace: darkwing
 
 resources:
   - namespace.yaml
+  - app-secrets.yaml
+  - kafka-configmap.yaml
+  - kafka-pvc.yaml
+  - kafka-deployment.yaml
+  - kafka-service.yaml
+  - kafka-ui-deployment.yaml
+  - kafka-ui-service.yaml
   - api-deployment.yaml
   - api-service.yaml
   - api-ingress.yaml
   - worker-deployment.yaml
+  - pricepicker-deployment.yaml
 
 labels:
   - pairs:

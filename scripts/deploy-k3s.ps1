@@ -16,6 +16,7 @@ param(
 
     [string]$ApiImage = "darkwing-api:local",
     [string]$WorkerImage = "darkwing-worker:local",
+    [string]$PricePickerImage = "darkwing-pricepicker:local",
 
     # Used only when -Runtime k3d
     [string]$K3dCluster = "darkwing"
@@ -84,6 +85,10 @@ Write-Host "Building $WorkerImage ..."
 docker build -t $WorkerImage -f "$Root/src/Darkwing.Worker/Dockerfile" $Root
 Assert-LastExitCode "docker build ($WorkerImage)"
 
+Write-Host "Building $PricePickerImage ..."
+docker build -t $PricePickerImage -f "$Root/src/PricePicker/Dockerfile" $Root
+Assert-LastExitCode "docker build ($PricePickerImage)"
+
 switch ($Runtime) {
     "docker-desktop" {
         # Docker Desktop kubeadm uses containerd; docker-built images must be imported into the node.
@@ -93,7 +98,7 @@ switch ($Runtime) {
         New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 
         Write-Host "Importing images into Docker Desktop node '$node' ..."
-        foreach ($image in @($ApiImage, $WorkerImage)) {
+        foreach ($image in @($ApiImage, $WorkerImage, $PricePickerImage)) {
             $safe = ($image -replace "[:/]", "-")
             $tar = Join-Path $tmp "$safe.tar"
             docker save $image -o $tar
@@ -107,7 +112,7 @@ switch ($Runtime) {
     "k3d" {
         Assert-Command k3d
         Write-Host "Importing images into k3d cluster '$K3dCluster' ..."
-        k3d image import $ApiImage $WorkerImage -c $K3dCluster
+        k3d image import $ApiImage $WorkerImage $PricePickerImage -c $K3dCluster
         Assert-LastExitCode "k3d image import"
     }
     "k3s" {
@@ -119,6 +124,8 @@ switch ($Runtime) {
         Assert-LastExitCode "k3s ctr import ($ApiImage)"
         docker save $WorkerImage | sudo k3s ctr images import -
         Assert-LastExitCode "k3s ctr import ($WorkerImage)"
+        docker save $PricePickerImage | sudo k3s ctr images import -
+        Assert-LastExitCode "k3s ctr import ($PricePickerImage)"
     }
 }
 
@@ -131,5 +138,6 @@ Write-Host "Done. Useful commands:"
 Write-Host "  kubectl -n darkwing get pods,svc,ingress"
 Write-Host "  kubectl -n darkwing logs -f deploy/darkwing-api"
 Write-Host "  kubectl -n darkwing logs -f deploy/darkwing-worker"
+Write-Host "  kubectl -n darkwing logs -f deploy/pricepicker"
 Write-Host "  kubectl -n darkwing port-forward svc/darkwing-api 8080:80"
 Write-Host "  curl http://localhost:8080/weatherforecast"

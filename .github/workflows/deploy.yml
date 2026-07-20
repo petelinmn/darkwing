@@ -20,7 +20,6 @@ jobs:
           username: ${{ secrets.VDS_USER }}
           key: ${{ secrets.VDS_SSH_KEY }}
           port: ${{ secrets.VDS_PORT }}
-          script_stop: true
           # Long enough for docker builds on a small VDS
           command_timeout: 30m
           script: |

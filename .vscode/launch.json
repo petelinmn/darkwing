@@ -27,6 +27,19 @@
       }
     },
     {
+      "name": "PricePicker (local)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/PricePicker/bin/Debug/net10.0/PricePicker.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/PricePicker",
+      "env": {
+        "DOTNET_ENVIRONMENT": "Development",
+        "Kafka__BootstrapServers": "localhost:9095"
+      }
+    },
+    {
       "name": "Docker: Attach Api",
       "type": "docker",
       "request": "attach",
