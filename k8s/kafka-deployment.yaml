@@ -24,7 +24,9 @@ spec:
           image: apache/kafka:latest
           ports:
             - containerPort: 9093
-            - containerPort: 9095
+              name: internal
+            - containerPort: 9094
+              name: controller
           env:
             - name: KAFKA_NODE_ID
               value: "1"
@@ -44,8 +46,10 @@ spec:
               value: "PLAIN"
             - name: KAFKA_OPTS
               value: "-Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf"
+            # Combined broker+controller in one pod: use localhost, not the Service
+            # DNS name. kafka:9094 fails because the Service only publishes 9093.
             - name: KAFKA_CONTROLLER_QUORUM_VOTERS
-              value: "1@kafka:9094"
+              value: "1@localhost:9094"
             - name: KAFKA_CONTROLLER_LISTENER_NAMES
               value: "CONTROLLER"
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
@@ -58,6 +62,8 @@ spec:
               value: "5L6g3nShT-eMCtK--X86sw"
             - name: KAFKA_LOG_RETENTION_MS
               value: "7776000000"
+            - name: KAFKA_LOG_DIRS
+              value: "/opt/kafka/data"
           volumeMounts:
             - name: kafka-data
               mountPath: /opt/kafka/data
