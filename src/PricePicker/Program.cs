@@ -15,7 +15,6 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 builder.Services.AddHostedService<PickerService>();
-builder.Services.AddScoped<HttpClient>();
 
 builder.Services.Configure<ServiceOptions>(
     builder.Configuration.GetSection("Service"));
@@ -27,7 +26,7 @@ var serviceOptions = builder.Configuration
 var kafkaOptions = builder.Configuration
     .GetSection("Kafka")
     .Get<KafkaOptions>() ?? throw new ArgumentNullException("Kafka options are not specified");
-builder.Services.AddScoped<IPriceChangeHandler>(_ => new KafkaPriceChangeHandler(kafkaOptions));
+builder.Services.AddSingleton<IPriceChangeHandler>(_ => new KafkaPriceChangeHandler(kafkaOptions));
 
 var tradingPairsDictionary = builder.Configuration
     .GetSection("TradingPairs")
@@ -41,7 +40,7 @@ var exchanges = builder.Configuration
                        .GetSection("Exchanges")
                        .Get<List<PublicExchangeCredential>>() ?? throw new Exception("Exchanges not found");
 
-builder.Services.AddScoped(_ => 
+builder.Services.AddSingleton(_ =>
     exchanges
         .Where(i => i.Enabled)
         .Select(PricePickerFactory.CreatePricePicker));
