@@ -14,7 +14,9 @@ services:
   price.picker:
     environment:
       - DOTNET_ENVIRONMENT=Development
+      - Kafka__BootstrapServers=kafka:9093
 
   price.analyzer:
     environment:
       - DOTNET_ENVIRONMENT=Development
+      - Kafka__BootstrapServers=kafka:9093
