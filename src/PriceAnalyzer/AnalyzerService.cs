@@ -1,56 +1,56 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PriceAnalyzer.Storage;
 
 namespace PriceAnalyzer;
 
 /// <summary>
-/// A background service that performs periodic tasks while the application is running.
-/// This service uses dependency injection to obtain an <see cref="ILogger{AnalyzerService}"/> for logging purposes.
+/// Background service that consumes price changes and logs them.
 /// </summary>
 public class AnalyzerService(
+    IPriceChangeConsumer priceChangeConsumer,
     ILogger<AnalyzerService> logger
     ) : BackgroundService
 {
-    /// <summary>
-    /// Executes the background task and monitors for cancellation requests.
-    /// Handles periodic operations in a loop while the service is running.
-    /// </summary>
-    /// <param name="stoppingToken">
-    /// A cancellation token that is triggered when the host is shutting down.
-    /// Allows cooperative cancellation of the background task.
-    /// </param>
-    /// <returns>
-    /// A <see cref="Task"/> that represents the asynchronous background execution operation.
-    /// </returns>
+    /// <inheritdoc/>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("Service started at: {time}", DateTimeOffset.Now);
 
-        const int delaySeconds = 15;
-
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            logger.LogInformation("Service heartbeat at: {time}", DateTimeOffset.Now);
-
-            try
-            {
-                await ProcessStep();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error during processing step at: {time}", DateTimeOffset.Now);
-                await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
-            }
-
-            await Task.Delay(TimeSpan.FromSeconds(delaySeconds), stoppingToken);
-        }
+        // Consume is blocking; run it off the host sync context.
+        await Task.Run(() => ConsumeLoop(stoppingToken), stoppingToken);
 
         logger.LogInformation("Service stopping at: {time}", DateTimeOffset.Now);
     }
 
-    private async Task ProcessStep()
+    private void ConsumeLoop(CancellationToken stoppingToken)
     {
-        Console.WriteLine("ProcessStep...");
-        await Task.CompletedTask;
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                var change = priceChangeConsumer.Consume(stoppingToken);
+                if (change is null)
+                {
+                    continue;
+                }
+
+                logger.LogInformation(
+                    "Price {Exchange} {Symbol} = {Price} at {Timestamp:O}",
+                    change.Exchange,
+                    change.Symbol,
+                    change.Price,
+                    change.Timestamp);
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                break;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error consuming price change at: {time}", DateTimeOffset.Now);
+                Thread.Sleep(TimeSpan.FromSeconds(5));
+            }
+        }
     }
 }

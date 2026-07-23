@@ -29,9 +29,6 @@ startupLogger.LogInformation(
     builder.Environment.EnvironmentName,
     builder.Environment.ContentRootPath);
 
-builder.Services.AddHostedService<AnalyzerService>();
-builder.Services.AddScoped<HttpClient>();
-
 var serviceOptions = builder.Configuration
     .GetSection("Service")
     .Get<ServiceOptions>() ?? new ServiceOptions();
@@ -46,7 +43,11 @@ if (serviceOptions.Disabled)
 
 var kafkaOptions = builder.Configuration
     .GetSection("Kafka")
-    .Get<KafkaOptions>() ?? throw new ArgumentNullException("Kafka options are not specified");
+    .Get<KafkaOptions>() ?? throw new ArgumentNullException(nameof(KafkaOptions), "Kafka options are not specified");
+
+builder.Services.AddSingleton(kafkaOptions);
+builder.Services.AddSingleton<IPriceChangeConsumer, KafkaPriceChangeConsumer>();
+builder.Services.AddHostedService<AnalyzerService>();
 
 var host = builder.Build();
 await host.RunAsync();
