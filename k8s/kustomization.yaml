@@ -17,6 +17,7 @@ resources:
   - api-ingress.yaml
   - worker-deployment.yaml
   - pricepicker-deployment.yaml
+  - priceanalyzer-deployment.yaml
 
 labels:
   - pairs:

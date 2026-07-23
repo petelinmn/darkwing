@@ -3,6 +3,7 @@
     <Project Path="src/Darkwing.Api/Darkwing.Api.csproj" />
     <Project Path="src/Darkwing.Worker/Darkwing.Worker.csproj" />
     <Project Path="src/PricePicker/PricePicker.csproj" />
+    <Project Path="src/PriceAnalyzer/PriceAnalyzer.csproj" />
   </Folder>
   <Folder Name="/src/Integration/">
   </Folder>

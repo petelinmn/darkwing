@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Darkwing.PriceAnalyzer": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

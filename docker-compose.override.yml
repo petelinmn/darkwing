@@ -14,3 +14,7 @@ services:
   price.picker:
     environment:
       - DOTNET_ENVIRONMENT=Development
+
+  price.analyzer:
+    environment:
+      - DOTNET_ENVIRONMENT=Development

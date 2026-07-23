@@ -14,10 +14,12 @@ cd "$ROOT"
 API_IMAGE="${API_IMAGE:-darkwing-api}"
 WORKER_IMAGE="${WORKER_IMAGE:-darkwing-worker}"
 PRICEPICKER_IMAGE="${PRICEPICKER_IMAGE:-darkwing-pricepicker}"
+PRICEANALYZER_IMAGE="${PRICEANALYZER_IMAGE:-darkwing-priceanalyzer}"
 IMAGE_TAG="${IMAGE_TAG:-local}"
 API_REF="${API_IMAGE}:${IMAGE_TAG}"
 WORKER_REF="${WORKER_IMAGE}:${IMAGE_TAG}"
 PRICEPICKER_REF="${PRICEPICKER_IMAGE}:${IMAGE_TAG}"
+PRICEANALYZER_REF="${PRICEANALYZER_IMAGE}:${IMAGE_TAG}"
 
 need() {
   command -v "$1" >/dev/null 2>&1 || {
@@ -43,19 +45,24 @@ docker build -t "${WORKER_REF}" -t "${WORKER_IMAGE}:local" -f src/Darkwing.Worke
 echo "Building ${PRICEPICKER_REF} ..."
 docker build -t "${PRICEPICKER_REF}" -t "${PRICEPICKER_IMAGE}:local" -f src/PricePicker/Dockerfile .
 
+echo "Building ${PRICEANALYZER_REF} ..."
+docker build -t "${PRICEANALYZER_REF}" -t "${PRICEANALYZER_IMAGE}:local" -f src/PriceAnalyzer/Dockerfile .
+
 echo "Importing images into k3s ..."
 docker save "${API_IMAGE}:local" | sudo k3s ctr images import -
 docker save "${WORKER_IMAGE}:local" | sudo k3s ctr images import -
 docker save "${PRICEPICKER_IMAGE}:local" | sudo k3s ctr images import -
+docker save "${PRICEANALYZER_IMAGE}:local" | sudo k3s ctr images import -
 
 echo "Applying manifests ..."
 kubectl apply -k k8s
 
 echo "Restarting deployments so pods pick up rebuilt :local images ..."
-kubectl -n darkwing rollout restart deploy/darkwing-api deploy/darkwing-worker deploy/pricepicker
+kubectl -n darkwing rollout restart deploy/darkwing-api deploy/darkwing-worker deploy/pricepicker deploy/priceanalyzer
 kubectl -n darkwing rollout status deploy/darkwing-api --timeout=180s
 kubectl -n darkwing rollout status deploy/darkwing-worker --timeout=180s
 kubectl -n darkwing rollout status deploy/pricepicker --timeout=180s
+kubectl -n darkwing rollout status deploy/priceanalyzer --timeout=180s
 
 echo ""
 echo "Deployed. Status:"

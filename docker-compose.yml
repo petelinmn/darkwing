@@ -26,6 +26,16 @@ services:
     networks:
       - darkwing-network
 
+  price.analyzer:
+    image: ${DOCKER_REGISTRY-}priceanalyzer
+    build:
+      context: .
+      dockerfile: src/PriceAnalyzer/Dockerfile
+    depends_on:
+      - kafka
+    networks:
+      - darkwing-network
+
   kafka:
     image: apache/kafka:latest
     container_name: kafka
